@@ -4,7 +4,7 @@
 function db() {
     //set your configs here
     $host = "127.5.96.3";
-    $user = "wisdom";
+    $user = "root";
     $db = "zuriphp";
     $password = "";
     $conn = mysqli_connect($host, $user, $password, $db);
