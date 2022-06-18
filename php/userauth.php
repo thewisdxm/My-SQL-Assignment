@@ -62,8 +62,6 @@ function resetPassword($email, $password){
     //open connection to the database and check if username exist in the database
     $email = $_POST['email'];
     $password = $_POST['password'];
-        //    $sql = "SELECT * FROM Students WHERE email='".$email."'";
-        //    $emailexists = mysqli_query($conn, $sql);
         //prepare the statement
         $stmt = $conn->prepare("SELECT * FROM Students WHERE email=?");
         //execute the statement
