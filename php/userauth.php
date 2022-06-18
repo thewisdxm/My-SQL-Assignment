@@ -15,7 +15,7 @@ function registerUser($fullnames, $email, $password, $gender, $country){
         //fetch result
         $user = $stmt->fetch();
    if ($user){
-            echo "This User exists already";
+            echo "<h1 style='color: red'>This User exists already</h1>";
    } else {
         $query = "INSERT INTO Students (`full_names`, `email`, `password`, `gender`, `country`)
                  VALUES ('$fullnames', '$email', '$password', '$gender', '$country');";
@@ -62,19 +62,27 @@ function resetPassword($email, $password){
     //open connection to the database and check if username exist in the database
     $email = $_POST['email'];
     $password = $_POST['password'];
-           $sql = "SELECT * FROM Students WHERE email='".$email."'";
-           
+        //    $sql = "SELECT * FROM Students WHERE email='".$email."'";
+        //    $emailexists = mysqli_query($conn, $sql);
+        //prepare the statement
+        $stmt = $conn->prepare("SELECT * FROM Students WHERE email=?");
+        //execute the statement
+        $stmt->execute([$email]); 
+        //fetch result
+        $emailexists = $stmt->fetch();
     //if it does, replace the password with $password given
-        if (mysqli_query($conn, $sql)){
+        if (!$emailexists){
+            echo "<h1 style='color: red'>User does not exist</h1>";
+        }   else {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $conn = db();
+            $sql = "SELECT * FROM Students WHERE email='".$email."'";
             $newpass = "UPDATE Students SET password='".$password."' WHERE email='".$email."'";
              
         if (mysqli_query($conn, $newpass)){
             header ("Location: ../forms/login.html");
-            } 
-
-            mysqli_close($conn);
-        }   else {
-            echo "<h1 style='color: red'>User does not exist</h1>";
+            }  mysqli_close($conn);
         } 
         
 } 
